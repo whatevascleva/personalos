@@ -1,0 +1,6 @@
+{
+  "name": "AetherOS - Personal Second Brain & Operating System",
+  "description": "Personal web operating system with customizable dashboard widgets, drag-and-drop second brain file management, top priority tasks, and instant quick-capture.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
