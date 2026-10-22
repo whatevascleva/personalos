@@ -2,7 +2,15 @@ export type AppView = 'dashboard' | 'files' | 'projects' | 'tasks' | 'reminders'
 
 export type OSTheme = 'obsidian' | 'slate' | 'light';
 
-export type GradientPreset = 'smoky-vanilla' | 'warm-horizon' | 'velvet-dusk' | 'aurora-bronze';
+export type GradientPreset = 
+  | 'la-night-grid' 
+  | 'sunset-arterial' 
+  | 'twilight-basin' 
+  | 'downtown-gold'
+  | 'smoky-vanilla' 
+  | 'warm-horizon' 
+  | 'velvet-dusk' 
+  | 'aurora-bronze';
 
 export interface FileItem {
   id: string;

@@ -24,30 +24,34 @@ const OSContent: React.FC = () => {
   const { activeView, gradientPreset } = useOS();
 
   const gradientClass = {
+    'la-night-grid': 'os-gradient-la-night-grid',
+    'sunset-arterial': 'os-gradient-sunset-arterial',
+    'twilight-basin': 'os-gradient-twilight-basin',
+    'downtown-gold': 'os-gradient-downtown-gold',
     'smoky-vanilla': 'os-gradient-smoky-vanilla',
     'warm-horizon': 'os-gradient-warm-horizon',
     'velvet-dusk': 'os-gradient-velvet-dusk',
     'aurora-bronze': 'os-gradient-aurora-bronze',
-  }[gradientPreset] || 'os-gradient-smoky-vanilla';
+  }[gradientPreset] || 'os-gradient-la-night-grid';
 
   return (
-    <div className={`h-screen w-screen flex flex-col overflow-hidden font-sans select-none text-[#FAF4F0] ${gradientClass} relative transition-all duration-700`}>
-      {/* Decorative ambient blurred glowing orbs for authentic glassmorphism specular highlights */}
+    <div className={`h-screen w-screen flex flex-col overflow-hidden font-sans select-none text-[#382629] ${gradientClass} relative transition-all duration-700`}>
+      {/* Decorative ambient blurred glowing orbs inspired by delicate rose quartz and silk petals */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -top-24 -left-24 w-[36rem] h-[36rem] rounded-full bg-[#64504A]/45 blur-[100px]"
+        className="pointer-events-none absolute -top-24 -left-24 w-[38rem] h-[38rem] rounded-full bg-[#DF9FA8]/22 blur-[120px]"
       />
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute top-1/4 -right-20 w-[34rem] h-[34rem] rounded-full bg-[#CEB7AB]/30 blur-[110px]"
+        className="pointer-events-none absolute top-1/4 -right-20 w-[36rem] h-[36rem] rounded-full bg-[#ECD0D4]/35 blur-[120px]"
       />
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -bottom-24 left-1/4 w-[42rem] h-[28rem] rounded-full bg-[#64504A]/35 blur-[120px]"
+        className="pointer-events-none absolute -bottom-24 left-1/4 w-[44rem] h-[30rem] rounded-full bg-[#D4AA8C]/16 blur-[130px]"
       />
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute top-1/2 left-1/3 w-[28rem] h-[28rem] rounded-full bg-[#7B7985]/25 blur-[120px]"
+        className="pointer-events-none absolute top-1/2 left-1/3 w-[30rem] h-[30rem] rounded-full bg-white/45 blur-[120px]"
       />
 
       {/* Top Header Bar */}

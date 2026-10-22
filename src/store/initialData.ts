@@ -290,7 +290,7 @@ export const INITIAL_PROJECTS: ProjectItem[] = [
     status: 'active',
     progress: 84,
     targetDate: 'Oct 24, 2026',
-    color: '#6366F1', // Indigo
+    color: '#C97D8B', // Rose Quartz
     priority: 'high',
     fileIds: ['file-proj-1', 'file-inbox-1'],
     keyResults: [
@@ -308,7 +308,7 @@ export const INITIAL_PROJECTS: ProjectItem[] = [
     status: 'active',
     progress: 68,
     targetDate: 'Nov 02, 2026',
-    color: '#10B981', // Emerald
+    color: '#DF9FA8', // Petal Blush
     priority: 'medium',
     fileIds: ['file-proj-2'],
     keyResults: [
@@ -325,7 +325,7 @@ export const INITIAL_PROJECTS: ProjectItem[] = [
     status: 'in_review',
     progress: 92,
     targetDate: 'Oct 18, 2026',
-    color: '#F59E0B', // Amber
+    color: '#D4AA8C', // Champagne Silk
     priority: 'high',
     fileIds: ['file-res-1', 'file-inbox-2'],
     keyResults: [
@@ -343,7 +343,7 @@ export const INITIAL_GOALS: GoalItem[] = [
     description: 'Execute frictionless personal OS with instant capture & widget customizer',
     category: 'work',
     targetQuarter: 'Q4 2026',
-    color: '#6366F1',
+    color: '#C97D8B',
   },
   {
     id: 'goal-2',
@@ -351,7 +351,7 @@ export const INITIAL_GOALS: GoalItem[] = [
     description: 'Achieve 100% WCAG AA token compliance across Slate & Obsidian themes',
     category: 'work',
     targetQuarter: 'Q4 2026',
-    color: '#10B981',
+    color: '#DF9FA8',
   },
   {
     id: 'goal-3',
@@ -359,7 +359,7 @@ export const INITIAL_GOALS: GoalItem[] = [
     description: 'Establish frictionless capture and weekly synthesis in PARA hierarchy',
     category: 'personal',
     targetQuarter: 'Q4 2026',
-    color: '#F59E0B',
+    color: '#D4AA8C',
   },
   {
     id: 'goal-4',
@@ -367,7 +367,7 @@ export const INITIAL_GOALS: GoalItem[] = [
     description: 'Build zero-friction sit-stand workspace, ambient lighting & smart climate',
     category: 'home',
     targetQuarter: 'Q4 2026',
-    color: '#06B6D4',
+    color: '#E8BAC2',
   },
   {
     id: 'goal-5',
@@ -375,7 +375,7 @@ export const INITIAL_GOALS: GoalItem[] = [
     description: 'Streamline monthly expenses, solar metrics, seasonal maintenance & family logistics',
     category: 'home',
     targetQuarter: 'Q1 2027',
-    color: '#EC4899',
+    color: '#382629',
   },
 ];
 

@@ -188,8 +188,8 @@ export const CommandPalette: React.FC = () => {
     <div className="fixed inset-0 z-50 flex items-start justify-center pt-[12vh] p-4 bg-black/80 backdrop-blur-md animate-fadeIn select-none">
       <div className="w-full max-w-xl glass-panel rounded-2xl shadow-2xl overflow-hidden flex flex-col">
         {/* Search Input Bar */}
-        <div className="p-4 border-b border-[#CEB7AB]/15 flex items-center gap-3 bg-[#120B06]/80">
-          <Search className="w-4 h-4 text-[#CEB7AB] shrink-0" />
+        <div className="p-4 border-b border-[#F59E0B]/15 flex items-center gap-3 bg-[#070B14]/80">
+          <Search className="w-4 h-4 text-[#F59E0B] shrink-0" />
           <input
             ref={inputRef}
             type="text"
@@ -202,7 +202,7 @@ export const CommandPalette: React.FC = () => {
             placeholder="Type a command, search documents, tasks, or initiatives..."
             className="w-full bg-transparent text-sm text-[#FAF4F0] placeholder:text-[#8A8C8D] focus:outline-none"
           />
-          <kbd className="font-mono text-[10px] text-[#CEB7AB] bg-[#120B06] px-1.5 py-0.5 rounded border border-[#CEB7AB]/20">
+          <kbd className="font-mono text-[10px] text-[#F59E0B] bg-[#070B14] px-1.5 py-0.5 rounded border border-[#F59E0B]/20">
             ESC
           </kbd>
         </div>
@@ -223,14 +223,14 @@ export const CommandPalette: React.FC = () => {
                 }}
                 className={`flex items-center justify-between p-2.5 rounded-xl cursor-pointer transition-colors text-xs ${
                   isSelected
-                    ? 'bg-[#CEB7AB] text-[#120B06] shadow-md font-semibold'
-                    : 'text-[#DFCCC1] hover:bg-[#64504A]/25'
+                    ? 'bg-[#F59E0B] text-[#070B14] shadow-md font-semibold'
+                    : 'text-[#FBBF24] hover:bg-[#EA580C]/25'
                 }`}
               >
                 <div className="flex items-center gap-3 min-w-0">
                   <Icon
                     className={`w-4 h-4 shrink-0 ${
-                      isSelected ? 'text-[#120B06]' : 'text-[#CEB7AB]'
+                      isSelected ? 'text-[#070B14]' : 'text-[#F59E0B]'
                     }`}
                   />
                   <div className="truncate">
@@ -238,7 +238,7 @@ export const CommandPalette: React.FC = () => {
                     {item.detail && (
                       <div
                         className={`text-[10px] truncate ${
-                          isSelected ? 'text-[#120B06]/75' : 'text-[#8A8C8D]'
+                          isSelected ? 'text-[#070B14]/75' : 'text-[#8A8C8D]'
                         }`}
                       >
                         {item.detail}
@@ -250,8 +250,8 @@ export const CommandPalette: React.FC = () => {
                 <span
                   className={`text-[10px] font-mono px-1.5 py-0.5 rounded shrink-0 ${
                     isSelected
-                      ? 'bg-[#120B06]/20 text-[#120B06] font-bold'
-                      : 'bg-[#120B06] text-[#A89E97] border border-[#CEB7AB]/10'
+                      ? 'bg-[#070B14]/20 text-[#070B14] font-bold'
+                      : 'bg-[#070B14] text-[#A89E97] border border-[#F59E0B]/10'
                   }`}
                 >
                   {item.category}
@@ -268,7 +268,7 @@ export const CommandPalette: React.FC = () => {
         </div>
 
         {/* Footer info */}
-        <div className="px-4 py-2 border-t border-[#CEB7AB]/10 bg-[#120B06]/60 flex items-center justify-between text-[11px] text-[#A89E97] font-mono">
+        <div className="px-4 py-2 border-t border-[#F59E0B]/10 bg-[#070B14]/60 flex items-center justify-between text-[11px] text-[#A89E97] font-mono">
           <span>Navigate with ↑ ↓ · Press Enter to open</span>
           <span>AetherOS Universal Index</span>
         </div>

@@ -34,31 +34,31 @@ const STATUS_CONFIG: Record<
 > = {
   active: {
     label: 'In Flight / Active',
-    bg: 'bg-indigo-500/10',
-    text: 'text-indigo-300',
-    border: 'border-indigo-500/20',
-    dot: 'bg-indigo-400',
+    bg: 'bg-[#DF9FA8]/20',
+    text: 'text-[#382629]',
+    border: 'border-[#DF9FA8]/40',
+    dot: 'bg-[#C97D8B]',
   },
   in_review: {
     label: 'In Review & QA',
-    bg: 'bg-amber-500/10',
-    text: 'text-amber-300',
-    border: 'border-amber-500/20',
-    dot: 'bg-amber-400',
+    bg: 'bg-[#D4AA8C]/20',
+    text: 'text-[#382629]',
+    border: 'border-[#D4AA8C]/40',
+    dot: 'bg-[#D4AA8C]',
   },
   completed: {
     label: 'Shipped / Completed',
-    bg: 'bg-emerald-500/10',
-    text: 'text-emerald-300',
-    border: 'border-emerald-500/20',
-    dot: 'bg-emerald-400',
+    bg: 'bg-[#DF9FA8]/30',
+    text: 'text-[#382629]',
+    border: 'border-[#DF9FA8]/50',
+    dot: 'bg-[#C97D8B]',
   },
   on_hold: {
     label: 'Backlog / On Hold',
-    bg: 'bg-slate-500/10',
-    text: 'text-slate-400',
-    border: 'border-slate-500/20',
-    dot: 'bg-slate-400',
+    bg: 'bg-[#382629]/10',
+    text: 'text-[#382629]/70',
+    border: 'border-[#382629]/20',
+    dot: 'bg-[#382629]/40',
   },
 };
 
@@ -66,9 +66,53 @@ const PRIORITY_CONFIG: Record<
   ProjectItem['priority'],
   { label: string; bg: string }
 > = {
-  high: { label: 'High Priority', bg: 'bg-rose-500/15 text-rose-300 border-rose-500/30' },
-  medium: { label: 'Medium', bg: 'bg-amber-500/15 text-amber-300 border-amber-500/30' },
-  low: { label: 'Low', bg: 'bg-slate-500/15 text-slate-300 border-slate-500/30' },
+  high: { label: 'High Priority', bg: 'bg-[#DF9FA8]/25 text-[#382629] border-[#DF9FA8]/40' },
+  medium: { label: 'Medium', bg: 'bg-[#D4AA8C]/25 text-[#382629] border-[#D4AA8C]/40' },
+  low: { label: 'Low', bg: 'bg-[#382629]/10 text-[#382629]/70 border-[#382629]/20' },
+};
+
+export const DOMAIN_THEME: Record<string, { bg: string; text: string; border: string; dot: string }> = {
+  Engineering: {
+    bg: 'bg-[#DF9FA8]/25',
+    text: 'text-[#382629]',
+    border: 'border-[#DF9FA8]/40',
+    dot: 'bg-[#C97D8B]',
+  },
+  Design: {
+    bg: 'bg-[#E8BAC2]/30',
+    text: 'text-[#382629]',
+    border: 'border-[#E8BAC2]/50',
+    dot: 'bg-[#E8BAC2]',
+  },
+  Research: {
+    bg: 'bg-[#D4AA8C]/25',
+    text: 'text-[#382629]',
+    border: 'border-[#D4AA8C]/40',
+    dot: 'bg-[#D4AA8C]',
+  },
+  Operations: {
+    bg: 'bg-[#C97D8B]/20',
+    text: 'text-[#382629]',
+    border: 'border-[#C97D8B]/35',
+    dot: 'bg-[#382629]/70',
+  },
+  Strategy: {
+    bg: 'bg-[#FAF6F6]',
+    text: 'text-[#382629]',
+    border: 'border-[#DF9FA8]/40',
+    dot: 'bg-[#C97D8B]',
+  },
+};
+
+export const getDomainStyle = (domainName: string) => {
+  return (
+    DOMAIN_THEME[domainName] || {
+      bg: 'bg-[#DF9FA8]/20',
+      text: 'text-[#382629]',
+      border: 'border-[#DF9FA8]/35',
+      dot: 'bg-[#C97D8B]',
+    }
+  );
 };
 
 export const ProjectsView: React.FC = () => {
@@ -290,11 +334,12 @@ export const ProjectsView: React.FC = () => {
   const renderCompactCard = (project: ProjectItem) => {
     const linkedDocs = files.filter((f) => project.fileIds.includes(f.id));
     const completedKrs = project.keyResults.filter((kr) => kr.done).length;
+    const domainStyle = getDomainStyle(project.category);
 
     return (
       <div
         key={project.id}
-        className="p-3.5 rounded-xl glass-card hover:border-[#CEB7AB]/35 transition-all flex flex-col justify-between group shadow-xs relative overflow-hidden"
+        className="p-3.5 rounded-xl glass-card hover:border-[#C97D8B]/40 transition-all flex flex-col justify-between group shadow-xs relative overflow-hidden bg-white/70 border border-white/80"
       >
         {/* Subtle accent color bar on top */}
         <div
@@ -307,10 +352,9 @@ export const ProjectsView: React.FC = () => {
           <div className="flex items-center justify-between gap-1.5 mb-2">
             <div className="flex items-center gap-1.5 min-w-0">
               <div
-                className="w-2 h-2 rounded-full shrink-0"
-                style={{ backgroundColor: project.color }}
+                className={`w-2 h-2 rounded-full shrink-0 ${domainStyle.dot}`}
               />
-              <span className="text-[10px] font-mono uppercase tracking-wider text-[#A89E97] bg-[#120B06]/70 px-1.5 py-0.5 rounded border border-[#CEB7AB]/10 truncate">
+              <span className={`text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 rounded-full border truncate ${domainStyle.bg} ${domainStyle.text} ${domainStyle.border}`}>
                 {project.category}
               </span>
               <span
@@ -325,14 +369,14 @@ export const ProjectsView: React.FC = () => {
             <div className="flex items-center gap-1 opacity-70 group-hover:opacity-100 transition-opacity shrink-0">
               <button
                 onClick={() => handleOpenEditModal(project)}
-                className="p-1 text-[#8A8C8D] hover:text-[#FAF4F0] rounded hover:bg-[#64504A]/30 transition-colors"
+                className="p-1 text-[#382629]/50 hover:text-[#382629] rounded hover:bg-[#DF9FA8]/20 transition-colors cursor-pointer"
                 title="Edit Project"
               >
                 <Edit2 className="w-3 h-3" />
               </button>
               <button
                 onClick={() => deleteProject(project.id)}
-                className="p-1 text-[#8A8C8D] hover:text-rose-400 rounded hover:bg-[#64504A]/30 transition-colors"
+                className="p-1 text-[#382629]/40 hover:text-rose-500 rounded hover:bg-[#DF9FA8]/20 transition-colors cursor-pointer"
                 title="Archive Project"
               >
                 <Trash2 className="w-3 h-3" />
@@ -340,15 +384,15 @@ export const ProjectsView: React.FC = () => {
             </div>
           </div>
 
-          {/* Title & Short Description */}
+          {/* Title & Short Description - Fully visible bold Rosewood text */}
           <h3
             onClick={() => handleOpenEditModal(project)}
-            className="font-semibold text-xs md:text-sm text-[#FAF4F0] hover:text-[#CEB7AB] transition-colors cursor-pointer line-clamp-1"
+            className="font-bold text-xs md:text-sm text-[#382629] hover:text-[#C97D8B] transition-colors cursor-pointer line-clamp-1"
           >
             {project.title}
           </h3>
           {project.description && (
-            <p className="text-[11px] text-[#A89E97] mt-1 line-clamp-1 leading-snug">
+            <p className="text-[11px] text-[#382629]/70 mt-1 line-clamp-1 leading-snug">
               {project.description}
             </p>
           )}
@@ -356,18 +400,14 @@ export const ProjectsView: React.FC = () => {
 
         {/* Middle: Progress Meter & Compact Key Results */}
         <div className="my-2.5 space-y-1.5">
-          <div className="flex items-center justify-between text-[10px] font-mono text-[#A89E97]">
+          <div className="flex items-center justify-between text-[10px] font-mono text-[#382629]/70">
             <span>Progress</span>
-            <span className="font-semibold text-[#FAF4F0] tabular-nums">
-              {project.progress}%
-            </span>
           </div>
-          <div className="w-full bg-[#120B06] h-1.5 rounded-full overflow-hidden border border-[#CEB7AB]/10">
+          <div className="w-full bg-[#382629]/10 h-1.5 rounded-full overflow-hidden">
             <div
-              className="h-full rounded-full transition-all duration-300"
+              className="h-full rounded-full transition-all duration-300 bg-gradient-to-r from-[#DF9FA8] to-[#C97D8B]"
               style={{
                 width: `${project.progress}%`,
-                backgroundColor: project.color,
               }}
             />
           </div>
@@ -375,27 +415,24 @@ export const ProjectsView: React.FC = () => {
           {/* Compact Key Results Preview */}
           {project.keyResults.length > 0 && (
             <div className="pt-1.5 space-y-1">
-              <div className="flex items-center justify-between text-[10px] font-mono text-[#A89E97]">
+              <div className="flex items-center justify-between text-[10px] font-mono text-[#382629]/70">
                 <span>Key Results</span>
-                <span className="tabular-nums">
-                  {completedKrs}/{project.keyResults.length}
-                </span>
               </div>
               <div className="space-y-0.5">
                 {project.keyResults.slice(0, 2).map((kr) => (
                   <div
                     key={kr.id}
                     onClick={() => toggleKeyResult(project.id, kr.id)}
-                    className="flex items-center gap-1.5 text-[#A89E97] hover:text-[#FAF4F0] cursor-pointer select-none text-[10px] py-0.5"
+                    className="flex items-center gap-1.5 text-[#382629]/70 hover:text-[#382629] cursor-pointer select-none text-[10px] py-0.5"
                   >
                     {kr.done ? (
-                      <CheckCircle2 className="w-3 h-3 text-emerald-400 shrink-0" />
+                      <CheckCircle2 className="w-3 h-3 text-[#C97D8B] shrink-0" />
                     ) : (
-                      <Circle className="w-3 h-3 text-[#8A8C8D] shrink-0" />
+                      <Circle className="w-3 h-3 text-[#382629]/30 shrink-0" />
                     )}
                     <span
                       className={`truncate ${
-                        kr.done ? 'line-through text-[#8A8C8D]' : 'text-[#DFCCC1]'
+                        kr.done ? 'line-through text-[#382629]/40' : 'text-[#382629]'
                       }`}
                     >
                       {kr.text}
@@ -405,9 +442,9 @@ export const ProjectsView: React.FC = () => {
                 {project.keyResults.length > 2 && (
                   <button
                     onClick={() => handleOpenEditModal(project)}
-                    className="text-[10px] text-[#CEB7AB] hover:underline font-mono"
+                    className="text-[10px] text-[#C97D8B] hover:underline font-mono"
                   >
-                    +{project.keyResults.length - 2} more key results
+                    View all key results
                   </button>
                 )}
               </div>
@@ -416,7 +453,7 @@ export const ProjectsView: React.FC = () => {
         </div>
 
         {/* Bottom Footer: Stage Selector & Target Date / Linked Specs */}
-        <div className="pt-2 border-t border-[#CEB7AB]/10 flex items-center justify-between gap-1 text-[10px]">
+        <div className="pt-2 border-t border-[#382629]/10 flex items-center justify-between gap-1 text-[10px]">
           {/* Status Dropdown */}
           <select
             value={project.status}
@@ -431,35 +468,27 @@ export const ProjectsView: React.FC = () => {
               STATUS_CONFIG[project.status].border
             }`}
           >
-            <option value="active" className="bg-[#120B06] text-[#FAF4F0]">
-              Active
-            </option>
-            <option value="in_review" className="bg-[#120B06] text-[#FAF4F0]">
-              In Review
-            </option>
-            <option value="completed" className="bg-[#120B06] text-[#FAF4F0]">
-              Completed
-            </option>
-            <option value="on_hold" className="bg-[#120B06] text-[#FAF4F0]">
-              On Hold
-            </option>
+            <option value="active">Active</option>
+            <option value="in_review">In Review</option>
+            <option value="completed">Completed</option>
+            <option value="on_hold">On Hold</option>
           </select>
 
           {/* Target Date & Specs Chip */}
-          <div className="flex items-center gap-2 font-mono text-[#A89E97]">
+          <div className="flex items-center gap-2 font-mono text-[#382629]/70">
             {linkedDocs.length > 0 && (
               <button
                 onClick={() => openFile(linkedDocs[0].id)}
-                className="flex items-center gap-1 text-[#CEB7AB] hover:text-[#FAF4F0] transition-colors"
-                title={`${linkedDocs.length} linked Second Brain doc(s)`}
+                className="flex items-center gap-1 text-[#C97D8B] hover:text-[#382629] transition-colors"
+                title="Linked Second Brain doc"
               >
-                <Paperclip className="w-2.5 h-2.5 text-[#CEB7AB]" />
-                <span>{linkedDocs.length}</span>
+                <Paperclip className="w-2.5 h-2.5 text-[#C97D8B]" />
+                <span>Spec</span>
               </button>
             )}
 
             <div className="flex items-center gap-1">
-              <Calendar className="w-2.5 h-2.5 text-[#8A8C8D]" />
+              <Calendar className="w-2.5 h-2.5 text-[#382629]/40" />
               <span>{project.targetDate}</span>
             </div>
           </div>
@@ -473,18 +502,15 @@ export const ProjectsView: React.FC = () => {
       {/* =========================================================================
           TOP HEADER: Clean Title "Projects", Subtitle, Search & "+ New Project"
          ========================================================================= */}
-      <div className="px-6 py-4 border-b border-[#CEB7AB]/15 bg-[#120B06]/75 backdrop-blur-xl shrink-0">
+      <div className="px-6 py-4 border-b border-[#382629]/10 bg-white/60 backdrop-blur-xl shrink-0">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <div className="flex items-center gap-3">
-              <h1 className="text-xl md:text-2xl font-bold tracking-tight text-[#FAF4F0] flex items-center gap-2">
+              <h1 className="text-xl md:text-2xl font-bold tracking-tight text-[#382629] flex items-center gap-2">
                 <span>Projects</span>
               </h1>
-              <span className="text-xs font-mono px-2.5 py-0.5 rounded-full bg-[#64504A]/30 text-[#CEB7AB] border border-[#CEB7AB]/20">
-                {stats.total} total · {stats.avgProgress}% avg progress
-              </span>
             </div>
-            <p className="text-xs text-[#A89E97] mt-1">
+            <p className="text-xs text-[#382629]/70 mt-1">
               Strategic initiatives, milestone roadmaps, and linked Second Brain specifications.
             </p>
           </div>
@@ -492,18 +518,18 @@ export const ProjectsView: React.FC = () => {
           <div className="flex items-center gap-3">
             {/* Quick Search in Header */}
             <div className="relative w-48 md:w-64">
-              <Search className="w-3.5 h-3.5 text-[#8A8C8D] absolute left-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+              <Search className="w-3.5 h-3.5 text-[#382629]/40 absolute left-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search projects..."
-                className="w-full pl-8 pr-7 py-1.5 glass-input rounded-lg text-xs placeholder:text-[#8A8C8D]"
+                className="w-full pl-8 pr-7 py-1.5 glass-input rounded-lg text-xs placeholder:text-[#382629]/40 text-[#382629]"
               />
               {searchQuery && (
                 <button
                   onClick={() => setSearchQuery('')}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 text-[#8A8C8D] hover:text-[#FAF4F0]"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 text-[#382629]/40 hover:text-[#382629]"
                 >
                   <X className="w-3 h-3" />
                 </button>
@@ -513,7 +539,7 @@ export const ProjectsView: React.FC = () => {
             {/* New Project Trigger */}
             <button
               onClick={handleOpenCreateModal}
-              className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-[#CEB7AB] hover:bg-[#DFCCC1] text-[#120B06] text-xs font-semibold shadow-md shadow-[#CEB7AB]/20 transition-all cursor-pointer shrink-0"
+              className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-[#DF9FA8] to-[#C97D8B] hover:brightness-105 text-white text-xs font-semibold shadow-md shadow-[#C97D8B]/20 transition-all cursor-pointer shrink-0"
             >
               <Plus className="w-3.5 h-3.5 stroke-[2.5]" />
               <span>New Project</span>
@@ -525,28 +551,19 @@ export const ProjectsView: React.FC = () => {
       {/* =========================================================================
           BAR OF DIFFERENT VIEWS (RIGHT ABOVE THE PROJECT CARDS)
          ========================================================================= */}
-      <div className="px-6 py-2.5 border-b border-[#CEB7AB]/15 bg-[#18100A]/55 backdrop-blur-md flex flex-wrap items-center justify-between gap-3 shrink-0">
-        {/* Left: Stage/Status View Tabs */}
-        <div className="flex items-center gap-1 bg-[#120B06]/80 border border-[#CEB7AB]/15 p-1 rounded-xl text-xs overflow-x-auto max-w-full shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
+      <div className="px-6 py-2.5 border-b border-[#382629]/10 bg-white/40 backdrop-blur-md flex flex-wrap items-center justify-between gap-3 shrink-0">
+        {/* Left: Stage/Status View Tabs (No data counters) */}
+        <div className="flex items-center gap-1 bg-white/60 border border-[#DF9FA8]/30 p-1 rounded-xl text-xs overflow-x-auto max-w-full shadow-sm">
           {/* ALL Projects */}
           <button
             onClick={() => setStageView('all')}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-medium transition-colors cursor-pointer whitespace-nowrap ${
               stageView === 'all'
-                ? 'bg-[#CEB7AB] text-[#120B06] font-semibold shadow-xs'
-                : 'text-[#A89E97] hover:text-[#FAF4F0] hover:bg-[#64504A]/25'
+                ? 'bg-[#C97D8B] text-white font-semibold shadow-xs'
+                : 'text-[#382629]/70 hover:text-[#382629] hover:bg-[#DF9FA8]/15'
             }`}
           >
-            <span>ALL Projects</span>
-            <span
-              className={`text-[10px] font-mono px-1.5 py-0.2 rounded-full ${
-                stageView === 'all'
-                  ? 'bg-[#120B06]/20 text-[#120B06] font-bold'
-                  : 'bg-[#120B06] text-[#CEB7AB] border border-[#CEB7AB]/15'
-              }`}
-            >
-              {stats.total}
-            </span>
+            <span>All Projects</span>
           </button>
 
           {/* Active Projects */}
@@ -554,21 +571,12 @@ export const ProjectsView: React.FC = () => {
             onClick={() => setStageView('active')}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-medium transition-colors cursor-pointer whitespace-nowrap ${
               stageView === 'active'
-                ? 'bg-[#CEB7AB] text-[#120B06] font-semibold shadow-xs'
-                : 'text-[#A89E97] hover:text-[#FAF4F0] hover:bg-[#64504A]/25'
+                ? 'bg-[#C97D8B] text-white font-semibold shadow-xs'
+                : 'text-[#382629]/70 hover:text-[#382629] hover:bg-[#DF9FA8]/15'
             }`}
           >
-            <div className={`w-1.5 h-1.5 rounded-full ${stageView === 'active' ? 'bg-[#120B06]' : 'bg-[#CEB7AB]'}`} />
+            <div className={`w-1.5 h-1.5 rounded-full ${stageView === 'active' ? 'bg-white' : 'bg-[#C97D8B]'}`} />
             <span>Active</span>
-            <span
-              className={`text-[10px] font-mono px-1.5 py-0.2 rounded-full ${
-                stageView === 'active'
-                  ? 'bg-[#120B06]/20 text-[#120B06] font-bold'
-                  : 'bg-[#120B06] text-[#CEB7AB] border border-[#CEB7AB]/15'
-              }`}
-            >
-              {stats.active}
-            </span>
           </button>
 
           {/* In Review */}
@@ -576,21 +584,12 @@ export const ProjectsView: React.FC = () => {
             onClick={() => setStageView('in_review')}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-medium transition-colors cursor-pointer whitespace-nowrap ${
               stageView === 'in_review'
-                ? 'bg-[#CEB7AB] text-[#120B06] font-semibold shadow-xs'
-                : 'text-[#A89E97] hover:text-[#FAF4F0] hover:bg-[#64504A]/25'
+                ? 'bg-[#C97D8B] text-white font-semibold shadow-xs'
+                : 'text-[#382629]/70 hover:text-[#382629] hover:bg-[#DF9FA8]/15'
             }`}
           >
-            <div className={`w-1.5 h-1.5 rounded-full ${stageView === 'in_review' ? 'bg-[#120B06]' : 'bg-amber-400'}`} />
+            <div className={`w-1.5 h-1.5 rounded-full ${stageView === 'in_review' ? 'bg-white' : 'bg-[#D4AA8C]'}`} />
             <span>In Review</span>
-            <span
-              className={`text-[10px] font-mono px-1.5 py-0.2 rounded-full ${
-                stageView === 'in_review'
-                  ? 'bg-[#120B06]/20 text-[#120B06] font-bold'
-                  : 'bg-[#120B06] text-[#CEB7AB] border border-[#CEB7AB]/15'
-              }`}
-            >
-              {stats.inReview}
-            </span>
           </button>
 
           {/* Completed Projects */}
@@ -598,21 +597,12 @@ export const ProjectsView: React.FC = () => {
             onClick={() => setStageView('completed')}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-medium transition-colors cursor-pointer whitespace-nowrap ${
               stageView === 'completed'
-                ? 'bg-[#CEB7AB] text-[#120B06] font-semibold shadow-xs'
-                : 'text-[#A89E97] hover:text-[#FAF4F0] hover:bg-[#64504A]/25'
+                ? 'bg-[#C97D8B] text-white font-semibold shadow-xs'
+                : 'text-[#382629]/70 hover:text-[#382629] hover:bg-[#DF9FA8]/15'
             }`}
           >
-            <div className={`w-1.5 h-1.5 rounded-full ${stageView === 'completed' ? 'bg-[#120B06]' : 'bg-emerald-400'}`} />
+            <div className={`w-1.5 h-1.5 rounded-full ${stageView === 'completed' ? 'bg-white' : 'bg-[#C97D8B]'}`} />
             <span>Completed</span>
-            <span
-              className={`text-[10px] font-mono px-1.5 py-0.2 rounded-full ${
-                stageView === 'completed'
-                  ? 'bg-[#120B06]/20 text-[#120B06] font-bold'
-                  : 'bg-[#120B06] text-[#CEB7AB] border border-[#CEB7AB]/15'
-              }`}
-            >
-              {stats.completed}
-            </span>
           </button>
 
           {/* On Hold */}
@@ -620,21 +610,12 @@ export const ProjectsView: React.FC = () => {
             onClick={() => setStageView('on_hold')}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-medium transition-colors cursor-pointer whitespace-nowrap ${
               stageView === 'on_hold'
-                ? 'bg-[#CEB7AB] text-[#120B06] font-semibold shadow-xs'
-                : 'text-[#A89E97] hover:text-[#FAF4F0] hover:bg-[#64504A]/25'
+                ? 'bg-[#C97D8B] text-white font-semibold shadow-xs'
+                : 'text-[#382629]/70 hover:text-[#382629] hover:bg-[#DF9FA8]/15'
             }`}
           >
-            <div className={`w-1.5 h-1.5 rounded-full ${stageView === 'on_hold' ? 'bg-[#120B06]' : 'bg-[#8A8C8D]'}`} />
+            <div className={`w-1.5 h-1.5 rounded-full ${stageView === 'on_hold' ? 'bg-white' : 'bg-[#382629]/40'}`} />
             <span>On Hold</span>
-            <span
-              className={`text-[10px] font-mono px-1.5 py-0.2 rounded-full ${
-                stageView === 'on_hold'
-                  ? 'bg-[#120B06]/20 text-[#120B06] font-bold'
-                  : 'bg-[#120B06] text-[#CEB7AB] border border-[#CEB7AB]/15'
-              }`}
-            >
-              {stats.onHold}
-            </span>
           </button>
 
           {/* Grouped by Status / Stage */}
@@ -642,8 +623,8 @@ export const ProjectsView: React.FC = () => {
             onClick={() => setStageView('grouped')}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-medium transition-colors cursor-pointer whitespace-nowrap ${
               stageView === 'grouped'
-                ? 'bg-[#CEB7AB] text-[#120B06] font-semibold shadow-xs'
-                : 'text-[#A89E97] hover:text-[#FAF4F0] hover:bg-[#64504A]/25'
+                ? 'bg-[#C97D8B] text-white font-semibold shadow-xs'
+                : 'text-[#382629]/70 hover:text-[#382629] hover:bg-[#DF9FA8]/15'
             }`}
           >
             <Layers className="w-3.5 h-3.5" />
@@ -654,18 +635,37 @@ export const ProjectsView: React.FC = () => {
         {/* Right: Domain Filter & Layout Mode (Cards, Board, Table) */}
         <div className="flex items-center gap-2 flex-wrap">
           {/* Domain Filter */}
-          <div className="flex items-center gap-1.5 bg-[#120B06]/80 border border-[#CEB7AB]/15 px-2 py-1 rounded-lg text-xs">
+          <div className="flex items-center gap-1.5 bg-[#070B14]/80 border border-[#F59E0B]/15 px-2 py-1 rounded-lg text-xs">
             <span className="text-[11px] text-[#A89E97]">Domain:</span>
             <select
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
               className="bg-transparent text-[#FAF4F0] font-mono text-[11px] focus:outline-none cursor-pointer"
             >
-              <option value="all" className="bg-[#120B06]">
+              <option value="all" className="bg-[#070B14]">
                 All Domains
               </option>
               {allCategories.map((cat) => (
-                <option key={cat} value={cat} className="bg-[#120B06]">
+                <option key={cat} value={cat} className="bg-[#070B14]">
+                  {cat}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Domain Filter */}
+          <div className="flex items-center gap-1.5 bg-white/60 border border-[#DF9FA8]/30 px-2.5 py-1 rounded-lg text-xs">
+            <span className="text-[11px] text-[#382629]/70 font-medium">Domain:</span>
+            <select
+              value={selectedCategory}
+              onChange={(e) => setSelectedCategory(e.target.value)}
+              className="bg-transparent text-[#382629] font-mono text-[11px] focus:outline-none cursor-pointer"
+            >
+              <option value="all" className="bg-white text-[#382629]">
+                All Domains
+              </option>
+              {allCategories.map((cat) => (
+                <option key={cat} value={cat} className="bg-white text-[#382629]">
                   {cat}
                 </option>
               ))}
@@ -673,36 +673,36 @@ export const ProjectsView: React.FC = () => {
           </div>
 
           {/* Priority Filter */}
-          <div className="flex items-center gap-1.5 bg-[#120B06]/80 border border-[#CEB7AB]/15 px-2 py-1 rounded-lg text-xs">
-            <span className="text-[11px] text-[#A89E97]">Priority:</span>
+          <div className="flex items-center gap-1.5 bg-white/60 border border-[#DF9FA8]/30 px-2.5 py-1 rounded-lg text-xs">
+            <span className="text-[11px] text-[#382629]/70 font-medium">Priority:</span>
             <select
               value={selectedPriority}
               onChange={(e) => setSelectedPriority(e.target.value)}
-              className="bg-transparent text-[#FAF4F0] font-mono text-[11px] focus:outline-none cursor-pointer"
+              className="bg-transparent text-[#382629] font-mono text-[11px] focus:outline-none cursor-pointer"
             >
-              <option value="all" className="bg-[#120B06]">
+              <option value="all" className="bg-white text-[#382629]">
                 All
               </option>
-              <option value="high" className="bg-[#120B06]">
+              <option value="high" className="bg-white text-[#382629]">
                 High
               </option>
-              <option value="medium" className="bg-[#120B06]">
+              <option value="medium" className="bg-white text-[#382629]">
                 Medium
               </option>
-              <option value="low" className="bg-[#120B06]">
+              <option value="low" className="bg-white text-[#382629]">
                 Low
               </option>
             </select>
           </div>
 
           {/* Layout Mode Switcher */}
-          <div className="flex items-center bg-[#120B06]/80 border border-[#CEB7AB]/15 p-0.5 rounded-lg text-xs">
+          <div className="flex items-center bg-white/60 border border-[#DF9FA8]/30 p-0.5 rounded-lg text-xs">
             <button
               onClick={() => setLayoutMode('cards')}
               className={`p-1.5 rounded-md transition-colors cursor-pointer ${
                 layoutMode === 'cards'
-                  ? 'bg-[#64504A]/50 text-[#CEB7AB]'
-                  : 'text-[#8A8C8D] hover:text-[#FAF4F0]'
+                  ? 'bg-[#C97D8B] text-white shadow-xs'
+                  : 'text-[#382629]/60 hover:text-[#382629]'
               }`}
               title="Compact Cards layout"
             >
@@ -713,8 +713,8 @@ export const ProjectsView: React.FC = () => {
               onClick={() => setLayoutMode('board')}
               className={`p-1.5 rounded-md transition-colors cursor-pointer ${
                 layoutMode === 'board'
-                  ? 'bg-[#64504A]/50 text-[#CEB7AB]'
-                  : 'text-[#8A8C8D] hover:text-[#FAF4F0]'
+                  ? 'bg-[#C97D8B] text-white shadow-xs'
+                  : 'text-[#382629]/60 hover:text-[#382629]'
               }`}
               title="Kanban Board layout"
             >
@@ -725,8 +725,8 @@ export const ProjectsView: React.FC = () => {
               onClick={() => setLayoutMode('table')}
               className={`p-1.5 rounded-md transition-colors cursor-pointer ${
                 layoutMode === 'table'
-                  ? 'bg-[#64504A]/50 text-[#CEB7AB]'
-                  : 'text-[#8A8C8D] hover:text-[#FAF4F0]'
+                  ? 'bg-[#C97D8B] text-white shadow-xs'
+                  : 'text-[#382629]/60 hover:text-[#382629]'
               }`}
               title="Table Spreadsheet layout"
             >
@@ -741,10 +741,10 @@ export const ProjectsView: React.FC = () => {
          ========================================================================= */}
       <div className="flex-1 overflow-y-auto p-5 md:p-6">
         {filteredProjects.length === 0 ? (
-          <div className="p-12 text-center rounded-2xl border border-dashed border-white/[0.1] bg-slate-900/20 max-w-lg mx-auto my-12">
-            <Target className="w-10 h-10 text-slate-600 mx-auto mb-3" />
-            <h3 className="text-sm font-semibold text-slate-200">No matching projects</h3>
-            <p className="text-xs text-slate-400 mt-1 max-w-sm mx-auto">
+          <div className="p-12 text-center rounded-2xl border border-dashed border-[#DF9FA8]/30 bg-white/40 max-w-lg mx-auto my-12">
+            <Target className="w-10 h-10 text-[#C97D8B] mx-auto mb-3" />
+            <h3 className="text-sm font-semibold text-[#382629]">No matching projects</h3>
+            <p className="text-xs text-[#382629]/70 mt-1 max-w-sm mx-auto">
               No projects match the current search or filters. You can clear your filters or create a new project.
             </p>
             <div className="flex items-center justify-center gap-3 mt-4">
@@ -755,13 +755,13 @@ export const ProjectsView: React.FC = () => {
                   setSelectedPriority('all');
                   setStageView('all');
                 }}
-                className="px-3.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs rounded-lg cursor-pointer"
+                className="px-3.5 py-1.5 bg-white/70 hover:bg-white text-[#382629] border border-[#DF9FA8]/30 text-xs rounded-lg cursor-pointer transition-colors"
               >
                 Reset Filters
               </button>
               <button
                 onClick={handleOpenCreateModal}
-                className="px-3.5 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-medium rounded-lg cursor-pointer"
+                className="px-3.5 py-1.5 bg-gradient-to-r from-[#DF9FA8] to-[#C97D8B] hover:brightness-105 text-white text-xs font-semibold rounded-lg shadow-md cursor-pointer transition-all"
               >
                 + New Project
               </button>
@@ -771,11 +771,11 @@ export const ProjectsView: React.FC = () => {
           /* =====================================================================
               TABLE SPREADSHEET LAYOUT
              ===================================================================== */
-          <div className="rounded-xl border border-white/[0.08] bg-slate-900/40 overflow-hidden shadow-xs">
+          <div className="rounded-xl border border-white/80 bg-white/70 overflow-hidden shadow-xs backdrop-blur-md">
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs border-collapse">
                 <thead>
-                  <tr className="border-b border-white/[0.08] bg-slate-950/70 text-slate-400 font-mono text-[10px]">
+                  <tr className="border-b border-[#382629]/10 bg-white/80 text-[#382629]/70 font-mono text-[10px]">
                     <th className="py-2.5 px-3.5 font-semibold">Project Title</th>
                     <th className="py-2.5 px-3.5 font-semibold">Domain</th>
                     <th className="py-2.5 px-3.5 font-semibold">Stage / Status</th>
@@ -786,30 +786,29 @@ export const ProjectsView: React.FC = () => {
                     <th className="py-2.5 px-3.5 font-semibold text-right">Actions</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-white/[0.04]">
+                <tbody className="divide-y divide-[#382629]/5">
                   {filteredProjects.map((project) => {
-                    const completedKrs = project.keyResults.filter((kr) => kr.done).length;
+                    const domainStyle = getDomainStyle(project.category);
                     return (
                       <tr
                         key={project.id}
-                        className="hover:bg-slate-900/60 transition-colors group"
+                        className="hover:bg-[#DF9FA8]/10 transition-colors group"
                       >
-                        <td className="py-2.5 px-3.5 font-medium text-slate-100 max-w-xs">
+                        <td className="py-2.5 px-3.5 font-bold text-[#382629] max-w-xs">
                           <div className="flex items-center gap-2">
                             <div
-                              className="w-2 h-2 rounded-full shrink-0"
-                              style={{ backgroundColor: project.color }}
+                              className={`w-2 h-2 rounded-full shrink-0 ${domainStyle.dot}`}
                             />
                             <span
                               onClick={() => handleOpenEditModal(project)}
-                              className="hover:text-indigo-300 cursor-pointer font-semibold truncate"
+                              className="hover:text-[#C97D8B] cursor-pointer font-bold truncate text-[#382629]"
                             >
                               {project.title}
                             </span>
                           </div>
                         </td>
-                        <td className="py-2.5 px-3.5 font-mono text-slate-300">
-                          <span className="bg-slate-950 px-1.5 py-0.5 rounded border border-white/[0.04] text-[10px]">
+                        <td className="py-2.5 px-3.5 font-mono">
+                          <span className={`px-2 py-0.5 rounded-full border text-[10px] ${domainStyle.bg} ${domainStyle.text} ${domainStyle.border}`}>
                             {project.category}
                           </span>
                         </td>
@@ -861,29 +860,26 @@ export const ProjectsView: React.FC = () => {
                                 }}
                               />
                             </div>
-                            <span className="font-mono text-[10px] tabular-nums text-slate-300">
-                              {project.progress}%
-                            </span>
                           </div>
                         </td>
-                        <td className="py-2.5 px-3.5 font-mono text-[10px] text-slate-400">
-                          {completedKrs}/{project.keyResults.length} done
+                        <td className="py-2.5 px-3.5 font-mono text-[10px] text-[#382629]/70">
+                          Key Results
                         </td>
-                        <td className="py-2.5 px-3.5 font-mono text-[10px] text-slate-400 whitespace-nowrap">
+                        <td className="py-2.5 px-3.5 font-mono text-[10px] text-[#382629]/70 whitespace-nowrap">
                           {project.targetDate}
                         </td>
                         <td className="py-2.5 px-3.5 text-right">
                           <div className="flex items-center justify-end gap-1">
                             <button
                               onClick={() => handleOpenEditModal(project)}
-                              className="p-1 text-slate-400 hover:text-white rounded hover:bg-slate-800 transition-colors"
+                              className="p-1 text-[#382629]/60 hover:text-[#382629] rounded hover:bg-[#DF9FA8]/20 transition-colors"
                               title="Edit"
                             >
                               <Edit2 className="w-3 h-3" />
                             </button>
                             <button
                               onClick={() => deleteProject(project.id)}
-                              className="p-1 text-slate-400 hover:text-rose-400 rounded hover:bg-slate-800 transition-colors"
+                              className="p-1 text-[#382629]/60 hover:text-[#C97D8B] rounded hover:bg-[#DF9FA8]/20 transition-colors"
                               title="Archive"
                             >
                               <Trash2 className="w-3 h-3" />
@@ -902,7 +898,7 @@ export const ProjectsView: React.FC = () => {
               KANBAN BOARD LAYOUT (COLUMNS BY STAGE)
              ===================================================================== */
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 items-start">
-            {stageSections.map(({ status, label, count }) => {
+            {stageSections.map(({ status, label }) => {
               const colProjects = filteredProjects.filter((p) => p.status === status);
               const isOver = dragOverColumn === status;
 
@@ -912,20 +908,17 @@ export const ProjectsView: React.FC = () => {
                   onDragOver={(e) => handleDragOver(e, status)}
                   onDragLeave={() => setDragOverColumn(null)}
                   onDrop={(e) => handleDrop(e, status)}
-                  className={`rounded-xl bg-slate-900/40 border transition-all p-3 flex flex-col min-h-[360px] ${
+                  className={`rounded-xl bg-white/40 border transition-all p-3 flex flex-col min-h-[360px] backdrop-blur-md ${
                     isOver
-                      ? 'border-indigo-500/60 bg-indigo-950/20 ring-2 ring-indigo-500/30'
-                      : 'border-white/[0.06]'
+                      ? 'border-[#C97D8B] bg-[#DF9FA8]/20 ring-2 ring-[#DF9FA8]/40'
+                      : 'border-white/60 shadow-sm'
                   }`}
                 >
-                  <div className="flex items-center justify-between pb-2 mb-2.5 border-b border-white/[0.06]">
+                  <div className="flex items-center justify-between pb-2 mb-2.5 border-b border-[#382629]/10">
                     <div className="flex items-center gap-2">
                       <div className={`w-2 h-2 rounded-full ${STATUS_CONFIG[status].dot}`} />
-                      <span className="font-semibold text-xs text-slate-200">{label}</span>
+                      <span className="font-semibold text-xs text-[#382629]">{label}</span>
                     </div>
-                    <span className="font-mono text-[10px] text-slate-400 tabular-nums px-2 py-0.5 rounded-full bg-slate-950 border border-white/[0.04]">
-                      {colProjects.length}
-                    </span>
                   </div>
 
                   <div className="space-y-2.5 flex-1">
@@ -940,7 +933,7 @@ export const ProjectsView: React.FC = () => {
                       </div>
                     ))}
                     {colProjects.length === 0 && (
-                      <div className="py-8 text-center border border-dashed border-white/[0.06] rounded-lg text-slate-500 text-xs">
+                      <div className="py-8 text-center border border-dashed border-[#DF9FA8]/30 rounded-lg text-[#382629]/50 text-xs">
                         No projects
                       </div>
                     )}
@@ -960,15 +953,12 @@ export const ProjectsView: React.FC = () => {
               return (
                 <div key={status} className="space-y-3">
                   {/* Stage Section Header */}
-                  <div className="flex items-center justify-between pb-2 border-b border-white/[0.06]">
+                  <div className="flex items-center justify-between pb-2 border-b border-[#382629]/10">
                     <div className="flex items-center gap-2">
                       <div className={`w-2.5 h-2.5 rounded-full ${STATUS_CONFIG[status].dot}`} />
-                      <h2 className="font-bold text-[#FAF4F0]">
+                      <h2 className="font-bold text-[#382629]">
                         {label}
                       </h2>
-                      <span className="font-mono text-[10px] text-slate-400 px-2 py-0.5 rounded-full bg-slate-900 border border-white/[0.06]">
-                        {sectionProjects.length} project{sectionProjects.length === 1 ? '' : 's'}
-                      </span>
                     </div>
 
                     <button
@@ -976,7 +966,7 @@ export const ProjectsView: React.FC = () => {
                         setFormStatus(status);
                         handleOpenCreateModal();
                       }}
-                      className="text-[11px] text-indigo-400 hover:text-indigo-300 font-medium flex items-center gap-1 cursor-pointer"
+                      className="text-[11px] text-[#C97D8B] hover:text-[#382629] font-medium flex items-center gap-1 cursor-pointer transition-colors"
                     >
                       <Plus className="w-3 h-3" />
                       <span>Add to {label.split(' / ')[0]}</span>
@@ -989,7 +979,7 @@ export const ProjectsView: React.FC = () => {
                       {sectionProjects.map((p) => renderCompactCard(p))}
                     </div>
                   ) : (
-                    <div className="py-6 px-4 text-center rounded-xl border border-dashed border-white/[0.06] bg-slate-900/20 text-slate-500 text-xs">
+                    <div className="py-6 px-4 text-center rounded-xl border border-dashed border-[#DF9FA8]/30 bg-white/30 text-[#382629]/50 text-xs">
                       No initiatives currently in this stage.
                     </div>
                   )}
@@ -1002,11 +992,11 @@ export const ProjectsView: React.FC = () => {
               COMPACT PROJECT CARDS GRID (ALL, ACTIVE, IN REVIEW, COMPLETED, ON HOLD)
              ===================================================================== */
           <div className="space-y-4">
-            <div className="flex items-center justify-between text-xs text-slate-400 pb-1">
-              <span className="font-mono">
-                Showing {filteredProjects.length} project{filteredProjects.length === 1 ? '' : 's'}
+            <div className="flex items-center justify-between text-xs text-[#382629]/60 pb-1">
+              <span className="font-medium">
+                Strategic Initiatives
               </span>
-              <span className="font-mono text-[11px] text-slate-500">
+              <span className="text-[11px] text-[#382629]/50">
                 Sorted by priority & timeline
               </span>
             </div>
@@ -1022,22 +1012,22 @@ export const ProjectsView: React.FC = () => {
           CREATE / EDIT PROJECT MODAL
          ========================================================================= */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fadeIn">
-          <div className="w-full max-w-2xl glass-panel rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-md animate-fadeIn">
+          <div className="w-full max-w-2xl glass-panel rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh] bg-white/90 border border-white/80">
             {/* Modal Header */}
-            <div className="px-6 py-4 border-b border-[#CEB7AB]/15 flex items-center justify-between bg-[#120B06]/80">
+            <div className="px-6 py-4 border-b border-[#382629]/10 flex items-center justify-between bg-white/60 backdrop-blur-md">
               <div className="flex items-center gap-2.5">
                 <div
                   className="w-4 h-4 rounded-full"
                   style={{ backgroundColor: formColor }}
                 />
-                <h3 className="font-bold text-sm md:text-base text-[#FAF4F0]">
+                <h3 className="font-bold text-sm md:text-base text-[#382629]">
                   {editingProjectId ? 'Edit Project Initiative' : 'New Project Initiative'}
                 </h3>
               </div>
               <button
                 onClick={() => setIsModalOpen(false)}
-                className="text-[#8A8C8D] hover:text-[#FAF4F0] p-1 rounded-lg hover:bg-[#64504A]/30 transition-colors cursor-pointer"
+                className="text-[#382629]/50 hover:text-[#382629] p-1 rounded-lg hover:bg-[#DF9FA8]/20 transition-colors cursor-pointer"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -1047,7 +1037,7 @@ export const ProjectsView: React.FC = () => {
             <form onSubmit={handleSaveProject} className="flex-1 overflow-y-auto p-6 space-y-4 text-xs">
               {/* Title */}
               <div>
-                <label className="block text-[11px] font-semibold text-[#DFCCC1] mb-1">
+                <label className="block text-[11px] font-semibold text-[#382629]/80 mb-1">
                   Project Title *
                 </label>
                 <input
@@ -1056,14 +1046,14 @@ export const ProjectsView: React.FC = () => {
                   value={formTitle}
                   onChange={(e) => setFormTitle(e.target.value)}
                   placeholder="e.g. AetherOS Next-Gen Architecture..."
-                  className="w-full px-3 py-2 glass-input rounded-lg placeholder:text-[#8A8C8D]"
+                  className="w-full px-3 py-2 glass-input rounded-lg text-[#382629] placeholder:text-[#382629]/40 border-[#DF9FA8]/30 focus:border-[#C97D8B]"
                   autoFocus
                 />
               </div>
 
               {/* Description */}
               <div>
-                <label className="block text-[11px] font-semibold text-[#DFCCC1] mb-1">
+                <label className="block text-[11px] font-semibold text-[#382629]/80 mb-1">
                   Executive Scope & Outcome
                 </label>
                 <textarea
@@ -1071,20 +1061,20 @@ export const ProjectsView: React.FC = () => {
                   value={formDescription}
                   onChange={(e) => setFormDescription(e.target.value)}
                   placeholder="Outline key deliverables, business context, and operational milestones..."
-                  className="w-full px-3 py-2 glass-input rounded-lg placeholder:text-[#8A8C8D] resize-none"
+                  className="w-full px-3 py-2 glass-input rounded-lg text-[#382629] placeholder:text-[#382629]/40 border-[#DF9FA8]/30 focus:border-[#C97D8B] resize-none"
                 />
               </div>
 
               {/* Metadata Row: Category, Status, Priority, Target Date */}
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
                 <div>
-                  <label className="block text-[11px] font-semibold text-[#DFCCC1] mb-1">
+                  <label className="block text-[11px] font-semibold text-[#382629]/80 mb-1">
                     Domain
                   </label>
                   <select
                     value={formCategory}
                     onChange={(e) => setFormCategory(e.target.value)}
-                    className="w-full bg-[#120B06] border border-[#CEB7AB]/20 rounded-lg px-2.5 py-2 text-[#FAF4F0] focus:outline-none"
+                    className="w-full bg-white/80 border border-[#DF9FA8]/30 rounded-lg px-2.5 py-2 text-[#382629] focus:outline-none focus:border-[#C97D8B]"
                   >
                     <option value="Engineering">Engineering</option>
                     <option value="Design">Design</option>
@@ -1095,13 +1085,13 @@ export const ProjectsView: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="block text-[11px] font-semibold text-[#DFCCC1] mb-1">
+                  <label className="block text-[11px] font-semibold text-[#382629]/80 mb-1">
                     Status
                   </label>
                   <select
                     value={formStatus}
                     onChange={(e) => setFormStatus(e.target.value as ProjectItem['status'])}
-                    className="w-full bg-[#120B06] border border-[#CEB7AB]/20 rounded-lg px-2.5 py-2 text-[#FAF4F0] focus:outline-none"
+                    className="w-full bg-white/80 border border-[#DF9FA8]/30 rounded-lg px-2.5 py-2 text-[#382629] focus:outline-none focus:border-[#C97D8B]"
                   >
                     <option value="active">In Flight / Active</option>
                     <option value="in_review">In Review & QA</option>
@@ -1111,13 +1101,13 @@ export const ProjectsView: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="block text-[11px] font-semibold text-[#DFCCC1] mb-1">
+                  <label className="block text-[11px] font-semibold text-[#382629]/80 mb-1">
                     Priority
                   </label>
                   <select
                     value={formPriority}
                     onChange={(e) => setFormPriority(e.target.value as ProjectItem['priority'])}
-                    className="w-full bg-[#120B06] border border-[#CEB7AB]/20 rounded-lg px-2.5 py-2 text-[#FAF4F0] focus:outline-none"
+                    className="w-full bg-white/80 border border-[#DF9FA8]/30 rounded-lg px-2.5 py-2 text-[#382629] focus:outline-none focus:border-[#C97D8B]"
                   >
                     <option value="high">High Priority</option>
                     <option value="medium">Medium</option>
@@ -1126,7 +1116,7 @@ export const ProjectsView: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="block text-[11px] font-semibold text-[#DFCCC1] mb-1">
+                  <label className="block text-[11px] font-semibold text-[#382629]/80 mb-1">
                     Target Date
                   </label>
                   <input
@@ -1134,24 +1124,23 @@ export const ProjectsView: React.FC = () => {
                     value={formTargetDate}
                     onChange={(e) => setFormTargetDate(e.target.value)}
                     placeholder="e.g. Dec 15, 2026"
-                    className="w-full glass-input rounded-lg px-2.5 py-1.5"
+                    className="w-full glass-input rounded-lg px-2.5 py-1.5 text-[#382629] border-[#DF9FA8]/30 focus:border-[#C97D8B]"
                   />
                 </div>
               </div>
 
-              {/* Accent Color Picker */}
+              {/* Accent Color Picker - Unified with Theme */}
               <div>
-                <label className="block text-[11px] font-semibold text-[#DFCCC1] mb-1.5">
+                <label className="block text-[11px] font-semibold text-[#382629]/80 mb-1.5">
                   Accent Color
                 </label>
                 <div className="flex items-center gap-2">
                   {[
-                    { name: 'Dark Vanilla', hex: '#CEB7AB' },
-                    { name: 'Umber Bronze', hex: '#64504A' },
-                    { name: 'Indigo Silk', hex: '#6366F1' },
-                    { name: 'Emerald', hex: '#10B981' },
-                    { name: 'Amber', hex: '#F59E0B' },
-                    { name: 'Rose', hex: '#EC4899' },
+                    { name: 'Rose Quartz', hex: '#C97D8B' },
+                    { name: 'Petal Blush', hex: '#DF9FA8' },
+                    { name: 'Champagne Silk', hex: '#D4AA8C' },
+                    { name: 'Dusty Blossom', hex: '#E8BAC2' },
+                    { name: 'Deep Rosewood', hex: '#382629' },
                   ].map((colorOption) => (
                     <button
                       key={colorOption.hex}
@@ -1159,20 +1148,20 @@ export const ProjectsView: React.FC = () => {
                       onClick={() => setFormColor(colorOption.hex)}
                       className={`w-6 h-6 rounded-full transition-transform cursor-pointer ${
                         formColor === colorOption.hex
-                          ? 'ring-2 ring-white ring-offset-2 ring-offset-[#120B06] scale-110'
+                          ? 'ring-2 ring-[#C97D8B] ring-offset-2 ring-offset-white scale-110'
                           : 'opacity-70 hover:opacity-100'
                       }`}
                       style={{ backgroundColor: colorOption.hex }}
                       title={colorOption.name}
                     />
                   ))}
-                  <span className="font-mono text-[10px] text-[#A89E97] ml-2">{formColor}</span>
+                  <span className="font-mono text-[10px] text-[#382629]/70 ml-2">{formColor}</span>
                 </div>
               </div>
 
               {/* Key Results Manager */}
-              <div className="space-y-2 pt-2 border-t border-[#CEB7AB]/10">
-                <label className="block text-[11px] font-semibold text-[#DFCCC1]">
+              <div className="space-y-2 pt-2 border-t border-[#382629]/10">
+                <label className="block text-[11px] font-semibold text-[#382629]/80">
                   Key Results & Milestones
                 </label>
                 <div className="flex gap-2">
@@ -1187,12 +1176,12 @@ export const ProjectsView: React.FC = () => {
                       }
                     }}
                     placeholder="Add milestone key result..."
-                    className="flex-1 px-3 py-1.5 glass-input rounded-lg placeholder:text-[#8A8C8D]"
+                    className="flex-1 px-3 py-1.5 glass-input rounded-lg text-[#382629] placeholder:text-[#382629]/40 border-[#DF9FA8]/30 focus:border-[#C97D8B]"
                   />
                   <button
                     type="button"
                     onClick={handleAddKeyResult}
-                    className="px-3.5 py-1.5 bg-[#64504A]/40 hover:bg-[#64504A]/60 text-[#FAF4F0] border border-[#CEB7AB]/25 rounded-lg font-medium cursor-pointer"
+                    className="px-3.5 py-1.5 bg-gradient-to-r from-[#DF9FA8] to-[#C97D8B] hover:brightness-105 text-white rounded-lg font-medium cursor-pointer transition-all shadow-xs"
                   >
                     + Add
                   </button>
@@ -1202,7 +1191,7 @@ export const ProjectsView: React.FC = () => {
                   {formKeyResults.map((kr) => (
                     <div
                       key={kr.id}
-                      className="flex items-center justify-between p-2 rounded-xl bg-[#120B06]/60 border border-[#CEB7AB]/10"
+                      className="flex items-center justify-between p-2 rounded-xl bg-white/60 border border-[#DF9FA8]/20"
                     >
                       <div className="flex items-center gap-2 flex-1">
                         <button
@@ -1215,19 +1204,19 @@ export const ProjectsView: React.FC = () => {
                           className="cursor-pointer"
                         >
                           {kr.done ? (
-                            <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                            <CheckCircle2 className="w-4 h-4 text-[#C97D8B]" />
                           ) : (
-                            <Circle className="w-4 h-4 text-[#8A8C8D]" />
+                            <Circle className="w-4 h-4 text-[#382629]/30 hover:text-[#C97D8B]" />
                           )}
                         </button>
-                        <span className={kr.done ? 'line-through text-[#8A8C8D]' : 'text-[#FAF4F0]'}>
+                        <span className={kr.done ? 'line-through text-[#382629]/40' : 'text-[#382629]'}>
                           {kr.text}
                         </span>
                       </div>
                       <button
                         type="button"
                         onClick={() => handleRemoveKeyResult(kr.id)}
-                        className="text-[#8A8C8D] hover:text-rose-400 p-1 cursor-pointer"
+                        className="text-[#382629]/40 hover:text-rose-500 p-1 cursor-pointer transition-colors"
                       >
                         <X className="w-3.5 h-3.5" />
                       </button>
@@ -1237,11 +1226,11 @@ export const ProjectsView: React.FC = () => {
               </div>
 
               {/* Linked Specs Selector */}
-              <div className="space-y-2 pt-2 border-t border-[#CEB7AB]/10">
-                <label className="block text-[11px] font-semibold text-[#DFCCC1]">
+              <div className="space-y-2 pt-2 border-t border-[#382629]/10">
+                <label className="block text-[11px] font-semibold text-[#382629]/80">
                   Attach Second Brain Specifications
                 </label>
-                <div className="max-h-36 overflow-y-auto space-y-1 bg-[#120B06]/60 p-2 rounded-xl border border-[#CEB7AB]/10">
+                <div className="max-h-36 overflow-y-auto space-y-1 bg-white/60 p-2 rounded-xl border border-[#DF9FA8]/20">
                   {files
                     .filter((f) => f.type === 'file')
                     .map((file) => {
@@ -1249,7 +1238,7 @@ export const ProjectsView: React.FC = () => {
                       return (
                         <label
                           key={file.id}
-                          className="flex items-center gap-2 p-1.5 rounded-lg hover:bg-[#64504A]/25 cursor-pointer text-[#FAF4F0] text-[11px]"
+                          className="flex items-center gap-2 p-1.5 rounded-lg hover:bg-[#DF9FA8]/15 cursor-pointer text-[#382629] text-[11px] transition-colors"
                         >
                           <input
                             type="checkbox"
@@ -1261,9 +1250,9 @@ export const ProjectsView: React.FC = () => {
                                 setFormSelectedFileIds((prev) => prev.filter((id) => id !== file.id));
                               }
                             }}
-                            className="rounded border-[#CEB7AB]/30 bg-[#120B06] text-[#CEB7AB] focus:ring-0"
+                            className="rounded border-[#DF9FA8]/40 text-[#C97D8B] focus:ring-0"
                           />
-                          <FileText className="w-3 h-3 text-[#CEB7AB] shrink-0" />
+                          <FileText className="w-3 h-3 text-[#C97D8B] shrink-0" />
                           <span className="truncate">{file.name}</span>
                         </label>
                       );
@@ -1272,17 +1261,17 @@ export const ProjectsView: React.FC = () => {
               </div>
 
               {/* Modal Actions */}
-              <div className="flex items-center justify-end gap-3 pt-4 border-t border-[#CEB7AB]/15">
+              <div className="flex items-center justify-end gap-3 pt-4 border-t border-[#382629]/10">
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(false)}
-                  className="px-4 py-2 text-[#A89E97] hover:text-[#FAF4F0] cursor-pointer"
+                  className="px-4 py-2 text-[#382629]/60 hover:text-[#382629] cursor-pointer transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 bg-[#CEB7AB] hover:bg-[#DFCCC1] text-[#120B06] rounded-lg font-semibold shadow-md shadow-[#CEB7AB]/20 cursor-pointer active:scale-95 transition-all"
+                  className="px-5 py-2 bg-gradient-to-r from-[#DF9FA8] to-[#C97D8B] hover:brightness-105 text-white rounded-lg font-semibold shadow-md shadow-[#C97D8B]/20 cursor-pointer active:scale-95 transition-all"
                 >
                   {editingProjectId ? 'Save Changes' : 'Create Project'}
                 </button>

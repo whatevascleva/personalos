@@ -53,16 +53,20 @@ export const TopBar: React.FC = () => {
     reminders: 'Reminders & Time Horizon',
   };
 
-  const PRESET_CYCLE: GradientPreset[] = ['smoky-vanilla', 'warm-horizon', 'velvet-dusk', 'aurora-bronze'];
+  const PRESET_CYCLE: GradientPreset[] = ['la-night-grid', 'sunset-arterial', 'twilight-basin', 'downtown-gold'];
   const PRESET_NAMES: Record<GradientPreset, string> = {
-    'smoky-vanilla': 'Smoky Vanilla Glow',
-    'warm-horizon': 'Warm Horizon',
-    'velvet-dusk': 'Velvet Dusk',
-    'aurora-bronze': 'Aurora Bronze',
+    'la-night-grid': 'Rose Quartz Silk',
+    'sunset-arterial': 'Petal Chiffon',
+    'twilight-basin': 'Dusty Blossom',
+    'downtown-gold': 'Champagne Silk',
+    'smoky-vanilla': 'Rose Quartz Silk',
+    'warm-horizon': 'Petal Chiffon',
+    'velvet-dusk': 'Dusty Blossom',
+    'aurora-bronze': 'Champagne Silk',
   };
 
   const handleCycleGradient = () => {
-    const currentIndex = PRESET_CYCLE.indexOf(gradientPreset);
+    const currentIndex = PRESET_CYCLE.indexOf(gradientPreset as any);
     const nextIndex = (currentIndex + 1) % PRESET_CYCLE.length;
     const nextPreset = PRESET_CYCLE[nextIndex];
     setGradientPreset(nextPreset);
@@ -70,17 +74,17 @@ export const TopBar: React.FC = () => {
   };
 
   return (
-    <header className="h-14 border-b border-[#CEB7AB]/15 px-5 flex items-center justify-between gap-8 shrink-0 select-none backdrop-blur-xl bg-[#160E0A]/60 z-30 shadow-[0_4px_20px_-4px_rgba(18,11,6,0.6)] font-heading">
+    <header className="h-14 border-b border-white/80 px-5 flex items-center justify-between gap-8 shrink-0 select-none backdrop-blur-xl bg-white/70 z-30 shadow-[0_2px_16px_rgba(122,96,100,0.06)] font-heading">
       {/* Zone 1: Wordmark and View Breadcrumb */}
       <div className="flex items-center gap-3 whitespace-nowrap shrink-0">
         <div className="flex items-center gap-2">
-          <div className="w-7 h-7 rounded-lg bg-gradient-to-tr from-[#64504A] via-[#8A8C8D] to-[#CEB7AB] flex items-center justify-center shadow-sm shadow-[#CEB7AB]/20 border border-white/20">
-            <span className="font-bold text-xs text-[#120B06] tracking-wider">Æ</span>
+          <div className="w-7 h-7 rounded-lg bg-gradient-to-tr from-[#DF9FA8] via-[#ECD0D4] to-[#D4AA8C] flex items-center justify-center shadow-xs border border-white">
+            <span className="font-bold text-xs text-[#382629] tracking-wider">Æ</span>
           </div>
-          <span className="font-semibold text-sm tracking-tight text-[#FAF4F0] font-heading">AetherOS</span>
+          <span className="font-semibold text-sm tracking-tight text-[#382629] font-heading">AetherOS</span>
         </div>
-        <span className="text-[#8A8C8D]/60 text-xs" aria-hidden="true">/</span>
-        <span className={`text-xs font-medium text-[#CEB7AB] font-heading ${activeView === 'dashboard' ? 'lowercase [letter-spacing:-1px]' : ''}`}>
+        <span className="text-[#A78D91]/60 text-xs" aria-hidden="true">/</span>
+        <span className={`text-xs font-medium text-[#382629] font-heading ${activeView === 'dashboard' ? 'lowercase [letter-spacing:-1px]' : ''}`}>
           {viewTitles[activeView]}
         </span>
       </div>
@@ -89,20 +93,20 @@ export const TopBar: React.FC = () => {
       <div className="hidden md:flex items-center gap-4 text-xs">
         <button
           onClick={() => setCommandPaletteOpen(true)}
-          className="flex items-center gap-3 px-3 py-1.5 rounded-lg bg-[#24160E]/50 border border-[#CEB7AB]/15 hover:border-[#CEB7AB]/40 text-[#8A8C8D] hover:text-[#FAF4F0] backdrop-blur-md transition-all text-xs group cursor-pointer shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]"
+          className="flex items-center gap-3 px-3 py-1.5 rounded-lg bg-white/70 border border-white/90 hover:border-[#DF9FA8]/40 text-[#7A6064] hover:text-[#382629] backdrop-blur-md transition-all text-xs group cursor-pointer shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]"
         >
-          <Search className="w-3.5 h-3.5 text-[#8A8C8D] group-hover:text-[#CEB7AB] transition-colors" />
+          <Search className="w-3.5 h-3.5 text-[#A78D91] group-hover:text-[#382629] transition-colors" />
           <span>Search or jump to...</span>
-          <kbd className="font-mono text-[10px] bg-[#120B06]/80 text-[#CEB7AB] px-1.5 py-0.5 rounded border border-[#CEB7AB]/15">
+          <kbd className="font-mono text-[10px] bg-[#DF9FA8]/15 text-[#382629] px-1.5 py-0.5 rounded border border-[#DF9FA8]/25 font-bold">
             ⌘K
           </kbd>
         </button>
 
-        <div className="flex items-center gap-2 text-[#8A8C8D] font-mono text-xs tabular-nums border-l border-[#CEB7AB]/15 pl-4">
-          <Calendar className="w-3.5 h-3.5 text-[#CEB7AB]/70" />
-          <span className="text-[#A89E97]">{dateStr}</span>
-          <span className="text-[#64504A]">·</span>
-          <span className="text-[#FAF4F0] font-medium">{time}</span>
+        <div className="flex items-center gap-2 text-[#7A6064] font-mono text-xs tabular-nums border-l border-[#DF9FA8]/25 pl-4">
+          <Calendar className="w-3.5 h-3.5 text-[#DF9FA8]" />
+          <span className="text-[#7A6064]">{dateStr}</span>
+          <span className="text-[#DF9FA8]">·</span>
+          <span className="text-[#382629] font-medium">{time}</span>
         </div>
       </div>
 
@@ -110,20 +114,20 @@ export const TopBar: React.FC = () => {
       <div className="flex items-center gap-2 shrink-0">
         <button
           onClick={handleCycleGradient}
-          className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs text-[#CEB7AB] hover:text-[#FAF4F0] bg-[#24160E]/50 hover:bg-[#64504A]/40 border border-[#CEB7AB]/15 hover:border-[#CEB7AB]/40 transition-all cursor-pointer backdrop-blur-md shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] group"
-          title={`Cycle Background Gradient (Current: ${PRESET_NAMES[gradientPreset]})`}
+          className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs text-[#382629] hover:text-[#382629] bg-white/60 hover:bg-white/90 border border-white/80 hover:border-[#DF9FA8]/40 transition-all cursor-pointer backdrop-blur-md shadow-[inset_0_1px_0_rgba(255,255,255,0.8)] group"
+          title={`Cycle Background Gradient (Current: ${PRESET_NAMES[gradientPreset] || 'Rose Quartz Silk'})`}
         >
-          <Palette className="w-3.5 h-3.5 text-[#CEB7AB] group-hover:scale-110 transition-transform" />
-          <span className="hidden sm:inline text-[11px] font-medium">Gradient</span>
-          <span className="w-2 h-2 rounded-full bg-gradient-to-tr from-[#64504A] to-[#CEB7AB] inline-block shadow-xs" />
+          <Palette className="w-3.5 h-3.5 text-[#DF9FA8] group-hover:scale-110 transition-transform" />
+          <span className="hidden sm:inline text-[11px] font-medium">Theme</span>
+          <span className="w-2 h-2 rounded-full bg-gradient-to-tr from-[#DF9FA8] to-[#D4AA8C] inline-block shadow-xs" />
         </button>
 
         <button
           onClick={() => setSettingsModalOpen(true)}
-          className="p-2 rounded-lg text-[#CEB7AB] hover:text-[#FAF4F0] bg-[#24160E]/50 hover:bg-[#64504A]/40 border border-[#CEB7AB]/15 hover:border-[#CEB7AB]/40 transition-all cursor-pointer backdrop-blur-md shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]"
+          className="p-2 rounded-lg text-[#382629] hover:text-[#382629] bg-white/60 hover:bg-white/90 border border-white/80 hover:border-[#DF9FA8]/40 transition-all cursor-pointer backdrop-blur-md shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]"
           title="Settings & Customization"
         >
-          <Settings className="w-4 h-4 text-[#CEB7AB] hover:rotate-45 transition-transform" />
+          <Settings className="w-4 h-4 text-[#7A6064] hover:text-[#382629] hover:rotate-45 transition-transform" />
         </button>
       </div>
     </header>
